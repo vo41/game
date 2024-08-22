@@ -3,7 +3,7 @@ function createPlanet_type0() {
         name: 'planet_type0',
         color: 'red',
         size: 30,
-        speed: 1,
+        speed: 0,
         x: 0,
         y: 0,
         updatePosition: function() {
