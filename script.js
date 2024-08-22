@@ -1,38 +1,135 @@
-// Initialize canvas and context
+// Set up canvas and context
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// Create instances of each planet type
-const planetType0 = createPlanet_type0();
-planetType0.x = 100;
-planetType0.y = 200;
+// Canvas settings
+const canvasWidth = 750;
+const canvasHeight = 500;
 
-const planetType1 = createPlanet_type1();
-planetType1.x = 300;
-planetType1.y = 200;
+// Ship settings
+const shipImage = new Image();
+shipImage.src = 'images/ship.png';
+const shipWidth = 50;
+const shipHeight = 50;
+let shipX = canvasWidth / 2 - shipWidth / 2;
+let shipY = canvasHeight - shipHeight - 10;
+const shipSpeed = 5;
 
-const planetType2 = createPlanet_type2();
-planetType2.x = 500;
-planetType2.y = 200;
+// Sound settings
+const moveSound = new Audio('sounds/move.mp3');
+let soundPlaying = false;
 
-const planetType3 = createPlanet_type3();
-planetType3.x = 700;
-planetType3.y = 200;
+// Planet settings
+const planetTypes = [
+    { name: 'planet_type0', color: 'red', size: 30 },
+    { name: 'planet_type1', color: 'blue', size: 40, moons: [{ size: 5, orbitRadius: 20 }] },
+    { name: 'planet_type2', color: 'green', size: 50, moons: [{ size: 5, orbitRadius: 20 }, { size: 10, orbitRadius: 30 }] },
+    { name: 'planet_type3', color: 'purple', size: 60, moons: [{ size: 5, orbitRadius: 20 }, { size: 10, orbitRadius: 30 }, { size: 15, orbitRadius: 40 }] }
+];
+const planets = [];
+const maxPlanets = 10;
 
-// Update and draw the planets
-function update() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    planetType0.draw(ctx);
-    planetType1.updatePosition();
-    planetType1.draw(ctx);
-    planetType2.updatePosition();
-    planetType2.draw(ctx);
-    planetType3.updatePosition();
-    planetType3.draw(ctx);
-    
-    requestAnimationFrame(update);
+// Generate random planets
+function generatePlanets() {
+    if (planets.length < maxPlanets) {
+        const planetType = planetTypes[Math.floor(Math.random() * planetTypes.length)];
+        const size = planetType.size;
+        const x = canvasWidth + size;
+        const y = Math.random() * (canvasHeight - size);
+        planets.push({
+            ...planetType,
+            x: x,
+            y: y,
+            speed: 1
+        });
+    }
 }
 
-// Start the update loop
-update();
+// Update planet positions
+function updatePlanets() {
+    planets.forEach((planet, index) => {
+        planet.x -= planet.speed;
+        if (planet.x < -planet.size) {
+            planets.splice(index, 1); // Remove off-screen planets
+        }
+    });
+}
+
+// Draw planet
+function drawPlanet(planet) {
+    ctx.fillStyle = planet.color;
+    ctx.beginPath();
+    ctx.arc(planet.x, planet.y, planet.size / 2, 0, Math.PI * 2);
+    ctx.fill();
+    
+    if (planet.moons) {
+        planet.moons.forEach(moon => {
+            moon.angle = (moon.angle || 0) + moon.orbitSpeed;
+            const moonX = planet.x + Math.cos(moon.angle) * moon.orbitRadius;
+            const moonY = planet.y + Math.sin(moon.angle) * moon.orbitRadius;
+            ctx.fillStyle = 'grey';
+            ctx.beginPath();
+            ctx.arc(moonX, moonY, moon.size / 2, 0, Math.PI * 2);
+            ctx.fill();
+        });
+    }
+}
+
+// Draw ship
+function drawShip() {
+    ctx.drawImage(shipImage, shipX, shipY, shipWidth, shipHeight);
+}
+
+// Update game visuals
+function update() {
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight); // Clear the canvas
+    generatePlanets();
+    updatePlanets();
+    drawShip();
+    planets.forEach(drawPlanet);
+}
+
+// Event listeners for ship movement and sound
+document.addEventListener('keydown', (event) => {
+    switch (event.key) {
+        case 'ArrowUp':
+            shipY -= shipSpeed;
+            break;
+        case 'ArrowDown':
+            shipY += shipSpeed;
+            break;
+        case 'ArrowLeft':
+            shipX -= shipSpeed;
+            break;
+        case 'ArrowRight':
+            shipX += shipSpeed;
+            break;
+    }
+    // Prevent the ship from going off-screen
+    shipX = Math.max(0, Math.min(canvasWidth - shipWidth, shipX));
+    shipY = Math.max(0, Math.min(canvasHeight - shipHeight, shipY));
+    
+    // Play sound if any arrow key is pressed
+    if (!soundPlaying) {
+        moveSound.loop = true;
+        moveSound.play();
+        soundPlaying = true;
+    }
+});
+
+document.addEventListener('keyup', (event) => {
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+        moveSound.pause();
+        moveSound.currentTime = 0;
+        soundPlaying = false;
+    }
+});
+
+// Main game loop
+function gameLoop() {
+    update();
+    requestAnimationFrame(gameLoop);
+}
+
+// Start the game loop
+gameLoop();
