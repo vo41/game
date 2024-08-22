@@ -3,11 +3,11 @@ function createPlanet_type0() {
         name: 'planet_type0',
         color: 'red',
         size: 30,
-        speed: 0,
+        speed: 0, // No movement
         x: 0,
         y: 0,
         updatePosition: function() {
-            this.x -= this.speed;
+            // No movement
         },
         draw: function(ctx) {
             ctx.fillStyle = this.color;
