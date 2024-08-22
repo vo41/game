@@ -1,30 +1,38 @@
+// Initialize canvas and context
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// Create the planets
-const planets = [
-    createPlanet_type0(),
-    createPlanet_type1(),
-    createPlanet_type2(), // Ensure these functions exist similarly
-    createPlanet_type3()  // Ensure these functions exist similarly
-];
+// Create instances of each planet type
+const planetType0 = createPlanet_type0();
+planetType0.x = 100;
+planetType0.y = 200;
 
-// Position planets in a row
-planets.forEach((planet, index) => {
-    planet.x = 100 + index * 150;
-    planet.y = canvas.height / 2;
-});
+const planetType1 = createPlanet_type1();
+planetType1.x = 300;
+planetType1.y = 200;
 
-// Main draw loop
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+const planetType2 = createPlanet_type2();
+planetType2.x = 500;
+planetType2.y = 200;
 
-    planets.forEach(planet => {
-        planet.updatePosition(); // Update the planet's position
-        planet.draw(ctx);        // Draw each planet
-    });
+const planetType3 = createPlanet_type3();
+planetType3.x = 700;
+planetType3.y = 200;
 
-    requestAnimationFrame(draw);  // Loop the draw function
+// Update and draw the planets
+function update() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    planetType0.draw(ctx);
+    planetType1.updatePosition();
+    planetType1.draw(ctx);
+    planetType2.updatePosition();
+    planetType2.draw(ctx);
+    planetType3.updatePosition();
+    planetType3.draw(ctx);
+    
+    requestAnimationFrame(update);
 }
 
-draw();  // Start drawing
+// Start the update loop
+update();
