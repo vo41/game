@@ -1,7 +1,7 @@
 function createPlanet_type1() {
     return {
         name: 'planet_type1',
-        color: 'blue',
+        color: 'red',
         size: 40,
         speed: 0, // No movement
         x: 0,
