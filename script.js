@@ -3,15 +3,10 @@ import { createPlanet_type1 } from './planet_type1.js';
 import { createPlanet_type2 } from './planet_type2.js';
 import { createPlanet_type3 } from './planet_type3.js';
 
-// Set up canvas and context
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// Set canvas size (750x500)
-canvas.width = 750;
-canvas.height = 500;
-
-// Create instances of each planet type
+// Create the planets
 const planets = [
     createPlanet_type0(),
     createPlanet_type1(),
@@ -19,23 +14,21 @@ const planets = [
     createPlanet_type3()
 ];
 
-// Position them in a row
+// Position planets in a row
 planets.forEach((planet, index) => {
-    planet.x = 150 + index * 150; // Space them out horizontally
-    planet.y = canvas.height / 2; // Center them vertically
+    planet.x = 100 + index * 150;  // Space them out
+    planet.y = canvas.height / 2;  // Center vertically
 });
 
-// Game loop to draw the planets
+// Main draw loop
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
 
-    // Draw all planets
     planets.forEach(planet => {
-        planet.draw(ctx);
+        planet.draw(ctx);  // Draw each planet
     });
 
-    requestAnimationFrame(draw); // Continue the loop
+    requestAnimationFrame(draw);  // Loop the draw function
 }
 
-// Start the visualization
-draw();
+draw();  // Start drawing
