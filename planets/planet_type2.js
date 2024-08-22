@@ -1,13 +1,13 @@
 function createPlanet_type2() {
     return {
         name: 'planet_type2',
-        color: 'green',
+        color: 'red',
         size: 50,
         speed: 0, // No movement
         x: 0,
         y: 0,
         moons: [
-            { x: 0, y: 0, size: 5, orbitRadius: 40, angle: 0, orbitSpeed: 0.01 },
+            { x: 0, y: 0, size: 5, orbitRadius: 35, angle: 0, orbitSpeed: 0.01 },
             { x: 0, y: 0, size: 10, orbitRadius: 50, angle: Math.PI / 3, orbitSpeed: -0.02 }
         ],
         updatePosition: function() {
