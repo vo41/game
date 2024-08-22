@@ -1,14 +1,20 @@
-// Set up canvas and context
+// Set up canvas and context with HD/Retina scaling
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// Fixed canvas dimensions
+// Set canvas size
 const canvasWidth = 750;
 const canvasHeight = 500;
 canvas.width = canvasWidth;
 canvas.height = canvasHeight;
 
-// Ship settings
+// Device Pixel Ratio for retina scaling
+const dpr = window.devicePixelRatio || 1;
+canvas.width = canvasWidth * dpr;
+canvas.height = canvasHeight * dpr;
+ctx.scale(dpr, dpr);
+
+// Load ship image
 const shipImage = new Image();
 shipImage.src = 'images/ship.png';
 const shipWidth = 50;
@@ -17,9 +23,12 @@ let shipX = canvasWidth / 2 - shipWidth / 2;
 let shipY = canvasHeight - shipHeight - 10;
 const shipSpeed = 5;
 
-// Sound settings
+// Load sound
 const moveSound = new Audio('sounds/move.mp3');
 let soundPlaying = false;
+
+// Planet speed
+const planetSpeed = 1;  // Speed for all planets
 
 // Array of planet creation functions
 const planetCreationFunctions = [
@@ -37,8 +46,9 @@ function generatePlanets() {
     if (planets.length < maxPlanets) {
         const createPlanet = planetCreationFunctions[Math.floor(Math.random() * planetCreationFunctions.length)];
         const planet = createPlanet();
-        planet.x = canvasWidth + planet.size;
-        planet.y = Math.random() * (canvasHeight - planet.size);
+        planet.x = canvasWidth + planet.size;  // Start off-screen to the right
+        planet.y = Math.random() * (canvasHeight - planet.size);  // Random vertical position
+        planet.speed = planetSpeed;  // Set speed here
         planets.push(planet);
     }
 }
