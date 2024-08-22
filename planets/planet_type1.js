@@ -2,16 +2,17 @@ function createPlanet_type1() {
     return {
         name: 'planet_type1',
         color: 'blue',
-        size: 30,
-        speed: 1,
+        size: 40,
+        speed: 0, // No movement
         x: 0,
         y: 0,
         moons: [
-            { x: 0, y: 0, size: 10, orbitRadius: 40, angle: 0, orbitSpeed: 0.01 }
+            { x: 0, y: 0, size: 15, orbitRadius: 30, angle: 0, orbitSpeed: 0 }
         ],
         updatePosition: function() {
-            this.x -= this.speed;
+            // No movement
             this.moons.forEach(moon => {
+                // Moons orbit, but planet itself stays still
                 moon.angle += moon.orbitSpeed;
                 moon.x = this.x + Math.cos(moon.angle) * moon.orbitRadius;
                 moon.y = this.y + Math.sin(moon.angle) * moon.orbitRadius;
