@@ -7,7 +7,7 @@ function createPlanet_type1() {
         x: 0,
         y: 0,
         moons: [
-            { x: 0, y: 0, size: 10, orbitRadius: 40, angle: 0, orbitSpeed: 0.02 }
+            { x: 0, y: 0, size: 5, orbitRadius: 40, angle: 0, orbitSpeed: 0.02 }
         ],
         updatePosition: function() {
             // Update moon positions
