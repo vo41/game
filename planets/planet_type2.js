@@ -1,48 +1,32 @@
-export function createPlanet_type2() {
+function createPlanet_type2() {
     return {
         name: 'planet_type2',
-        color: 'red',
-        size: 30,
+        color: 'green',
+        size: 40,
         speed: 1,
         x: 0,
         y: 0,
         moons: [
-            {
-                size: 10,
-                distance: 40,
-                angle: 0,
-                speed: 0.05,
-            },
-            {
-                size: 15,
-                distance: 60,
-                angle: Math.PI,
-                speed: 0.03,
-            }
+            { x: 0, y: 0, size: 15, orbitRadius: 50, angle: 0, orbitSpeed: 0.01 },
+            { x: 0, y: 0, size: 15, orbitRadius: 80, angle: Math.PI / 3, orbitSpeed: 0.02 }
         ],
-        
         updatePosition: function() {
             this.x -= this.speed;
             this.moons.forEach(moon => {
-                moon.angle += moon.speed;
+                moon.angle += moon.orbitSpeed;
+                moon.x = this.x + Math.cos(moon.angle) * moon.orbitRadius;
+                moon.y = this.y + Math.sin(moon.angle) * moon.orbitRadius;
             });
         },
-        
         draw: function(ctx) {
-            // Draw planet
             ctx.fillStyle = this.color;
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
             ctx.fill();
-
-            // Draw moons
             this.moons.forEach(moon => {
-                const moonX = this.x + Math.cos(moon.angle) * moon.distance;
-                const moonY = this.y + Math.sin(moon.angle) * moon.distance;
-
-                ctx.fillStyle = 'blue';
+                ctx.fillStyle = 'lightgreen';
                 ctx.beginPath();
-                ctx.arc(moonX, moonY, moon.size / 2, 0, Math.PI * 2);
+                ctx.arc(moon.x, moon.y, moon.size / 2, 0, Math.PI * 2);
                 ctx.fill();
             });
         }
