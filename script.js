@@ -2,15 +2,11 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// Set canvas for retina displays
-const scaleFactor = window.devicePixelRatio || 1;
-canvas.width = 750 * scaleFactor;
-canvas.height = 500 * scaleFactor;
-ctx.scale(scaleFactor, scaleFactor);
-
-// Canvas settings
-const canvasWidth = canvas.width;
-const canvasHeight = canvas.height;
+// Fixed canvas dimensions
+const canvasWidth = 750;
+const canvasHeight = 500;
+canvas.width = canvasWidth;
+canvas.height = canvasHeight;
 
 // Ship settings
 const shipImage = new Image();
