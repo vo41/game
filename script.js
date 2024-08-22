@@ -1,7 +1,7 @@
-import { createPlanet_type0 } from './planet_type0.js';
-import { createPlanet_type1 } from './planet_type1.js';
-import { createPlanet_type2 } from './planet_type2.js';
-import { createPlanet_type3 } from './planet_type3.js';
+import { createPlanet_type0 } from './planets/planet_type0.js';
+import { createPlanet_type1 } from './planets/planet_type1.js';
+import { createPlanet_type2 } from './planets/planet_type2.js';
+import { createPlanet_type3 } from './planets/planet_type3.js';
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
