@@ -2,16 +2,16 @@ function createPlanet_type2() {
     return {
         name: 'planet_type2',
         color: 'green',
-        size: 40,
-        speed: 1,
+        size: 50,
+        speed: 0, // No movement
         x: 0,
         y: 0,
         moons: [
             { x: 0, y: 0, size: 15, orbitRadius: 50, angle: 0, orbitSpeed: 0.01 },
-            { x: 0, y: 0, size: 15, orbitRadius: 80, angle: Math.PI / 3, orbitSpeed: 0.02 }
+            { x: 0, y: 0, size: 15, orbitRadius: 80, angle: Math.PI / 3, orbitSpeed: 0.01 }
         ],
         updatePosition: function() {
-            this.x -= this.speed;
+            // Update moon positions
             this.moons.forEach(moon => {
                 moon.angle += moon.orbitSpeed;
                 moon.x = this.x + Math.cos(moon.angle) * moon.orbitRadius;
@@ -23,6 +23,7 @@ function createPlanet_type2() {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
             ctx.fill();
+            // Draw moons
             this.moons.forEach(moon => {
                 ctx.fillStyle = 'lightgreen';
                 ctx.beginPath();
