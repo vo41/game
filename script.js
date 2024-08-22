@@ -25,12 +25,8 @@ const shipSpeed = 5;
 const moveSound = new Audio('sounds/move.mp3');
 let soundPlaying = false;
 
-// Planet speed
-const planetSpeed = 1;  // Speed for all planets
-
-// Score
+// Initialize score
 let score = 0;
-const scoreElement = document.getElementById('score');
 
 // Array of planet creation functions
 const planetCreationFunctions = [
@@ -41,26 +37,31 @@ const planetCreationFunctions = [
 ];
 
 const planets = [];
-const maxPlanets = 10;
+const maxPlanets = 20; // Maximum number of planets on the screen at one time
 
 // Function to generate random planets
 function generatePlanets() {
     if (planets.length < maxPlanets) {
-        const createPlanet = planetCreationFunctions[Math.floor(Math.random() * planetCreationFunctions.length)];
-        let planet;
-        let attempts = 0;
-        const maxAttempts = 100; // Maximum attempts to avoid overlap
-        
-        do {
-            planet = createPlanet();
-            planet.x = canvasWidth + planet.size;  // Start off-screen to the right
-            planet.y = Math.random() * (canvasHeight - planet.size);  // Random vertical position
-            attempts++;
-        } while (isOverlapping(planet) && attempts < maxAttempts);
+        // Random number of planets to generate
+        const numPlanets = Math.floor(Math.random() * 5) + 1;  // 1 to 5 planets
 
-        if (!isOverlapping(planet)) {
-            planet.speed = planetSpeed;
-            planets.push(planet);
+        for (let i = 0; i < numPlanets; i++) {
+            const createPlanet = planetCreationFunctions[Math.floor(Math.random() * planetCreationFunctions.length)];
+            let planet;
+            let attempts = 0;
+            const maxAttempts = 100; // Maximum attempts to avoid overlap
+
+            do {
+                planet = createPlanet();
+                planet.x = canvasWidth + planet.size;  // Start off-screen to the right
+                planet.y = Math.random() * (canvasHeight - planet.size);  // Random vertical position
+                attempts++;
+            } while (isOverlapping(planet) && attempts < maxAttempts);
+
+            if (!isOverlapping(planet)) {
+                planet.speed = planetSpeed;
+                planets.push(planet);
+            }
         }
     }
 }
@@ -178,9 +179,15 @@ document.addEventListener('keyup', (event) => {
     }
 });
 
+// Update score
+function updateScore() {
+    scoreElement.textContent = 'Score: ' + score;
+}
+
 // Main game loop
 function gameLoop() {
     update();
+    updateScore(); // Update score display
     requestAnimationFrame(gameLoop);
 }
 
