@@ -28,6 +28,10 @@ let soundPlaying = false;
 // Planet speed
 const planetSpeed = 1;  // Speed for all planets
 
+// Score
+let score = 0;
+const scoreElement = document.getElementById('score');
+
 // Array of planet creation functions
 const planetCreationFunctions = [
     createPlanet_type0,
@@ -39,16 +43,44 @@ const planetCreationFunctions = [
 const planets = [];
 const maxPlanets = 10;
 
-// Generate random planets
+// Function to generate random planets
 function generatePlanets() {
     if (planets.length < maxPlanets) {
         const createPlanet = planetCreationFunctions[Math.floor(Math.random() * planetCreationFunctions.length)];
-        const planet = createPlanet();
-        planet.x = canvasWidth + planet.size;  // Start off-screen to the right
-        planet.y = Math.random() * (canvasHeight - planet.size);  // Random vertical position
-        planet.speed = planetSpeed;  // Set speed here
-        planets.push(planet);
+        let planet;
+        let attempts = 0;
+        const maxAttempts = 100; // Maximum attempts to avoid overlap
+        
+        do {
+            planet = createPlanet();
+            planet.x = canvasWidth + planet.size;  // Start off-screen to the right
+            planet.y = Math.random() * (canvasHeight - planet.size);  // Random vertical position
+            attempts++;
+        } while (isOverlapping(planet) && attempts < maxAttempts);
+
+        if (!isOverlapping(planet)) {
+            planet.speed = planetSpeed;
+            planets.push(planet);
+        }
     }
+}
+
+// Check if the new planet overlaps with existing planets
+function isOverlapping(newPlanet) {
+    for (const planet of planets) {
+        const distance = Math.hypot(planet.x - newPlanet.x, planet.y - newPlanet.y);
+        if (distance < (planet.size + newPlanet.size) / 2) {
+            return true; // Overlapping
+        }
+        // Check moons
+        for (const moon of planet.moons || []) {
+            const moonDistance = Math.hypot(moon.x - newPlanet.x, moon.y - newPlanet.y);
+            if (moonDistance < (moon.size + newPlanet.size) / 2) {
+                return true; // Overlapping with moon
+            }
+        }
+    }
+    return false; // No overlap
 }
 
 // Update planet positions
@@ -72,6 +104,30 @@ function drawShip() {
     ctx.drawImage(shipImage, shipX, shipY, shipWidth, shipHeight);
 }
 
+// Check for collision between ship and any planet/moon
+function checkCollisions() {
+    for (const planet of planets) {
+        const dx = shipX + shipWidth / 2 - planet.x;
+        const dy = shipY + shipHeight / 2 - planet.y;
+        const distance = Math.hypot(dx, dy);
+
+        if (distance < planet.size / 2) {
+            return true; // Collision with planet
+        }
+
+        for (const moon of planet.moons || []) {
+            const moonDx = shipX + shipWidth / 2 - moon.x;
+            const moonDy = shipY + shipHeight / 2 - moon.y;
+            const moonDistance = Math.hypot(moonDx, moonDy);
+
+            if (moonDistance < moon.size / 2) {
+                return true; // Collision with moon
+            }
+        }
+    }
+    return false;
+}
+
 // Update game visuals
 function update() {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight); // Clear the canvas
@@ -79,6 +135,11 @@ function update() {
     updatePlanets();
     drawShip();
     planets.forEach(drawPlanet);
+
+    if (checkCollisions()) {
+        alert('Game Over! Your Score: ' + score);
+        document.location.reload(); // Reload the page to restart the game
+    }
 }
 
 // Event listeners for ship movement and sound
