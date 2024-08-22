@@ -25,7 +25,7 @@ function createPlanet_type2() {
             ctx.fill();
             // Draw moons
             this.moons.forEach(moon => {
-                ctx.fillStyle = 'lightgreen';
+                ctx.fillStyle = 'lightgrey';
                 ctx.beginPath();
                 ctx.arc(moon.x, moon.y, moon.size / 2, 0, Math.PI * 2);
                 ctx.fill();
