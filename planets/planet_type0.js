@@ -1,4 +1,4 @@
-export function createPlanet_type0() {
+function createPlanet_type0() {
     return {
         name: 'planet_type0',
         color: 'red',
@@ -6,11 +6,9 @@ export function createPlanet_type0() {
         speed: 1,
         x: 0,
         y: 0,
-        
         updatePosition: function() {
             this.x -= this.speed;
         },
-        
         draw: function(ctx) {
             ctx.fillStyle = this.color;
             ctx.beginPath();
