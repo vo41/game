@@ -8,8 +8,8 @@ function createPlanet_type3() {
         y: 0,
         moons: [
             { x: 0, y: 0, size: 5, orbitRadius: 40, angle: 0, orbitSpeed: 0.01 },
-            { x: 0, y: 0, size: 10, orbitRadius: 60, angle: Math.PI / 4, orbitSpeed: 0.02 },
-            { x: 0, y: 0, size: 10, orbitRadius: 80, angle: Math.PI / 2, orbitSpeed: -0.02 }
+            { x: 0, y: 0, size: 10, orbitRadius: 55, angle: Math.PI / 4, orbitSpeed: 0.02 },
+            { x: 0, y: 0, size: 10, orbitRadius: 75, angle: Math.PI / 2, orbitSpeed: -0.02 }
         ],
         updatePosition: function() {
             // Update moon positions
