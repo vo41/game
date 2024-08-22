@@ -5,10 +5,8 @@ const ctx = canvas.getContext('2d');
 // Set canvas size
 const canvasWidth = 750;
 const canvasHeight = 500;
-canvas.width = canvasWidth;
-canvas.height = canvasHeight;
 
-// Device Pixel Ratio for retina scaling
+// Apply device pixel ratio for HD/Retina scaling
 const dpr = window.devicePixelRatio || 1;
 canvas.width = canvasWidth * dpr;
 canvas.height = canvasHeight * dpr;
@@ -56,7 +54,8 @@ function generatePlanets() {
 // Update planet positions
 function updatePlanets() {
     planets.forEach((planet, index) => {
-        planet.updatePosition();
+        planet.x -= planet.speed;  // Move the planet to the left
+        planet.updatePosition();   // Update position for moons if any
         if (planet.x < -planet.size) {
             planets.splice(index, 1); // Remove off-screen planets
         }
