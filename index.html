@@ -5,25 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space Dodger Game</title>
     <style>
-        body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #000;
-        }
-        canvas {
-            border: 1px solid #fff;
-        }
+        body { margin: 0; }
+        canvas { display: block; margin: auto; background: black; }
+        #score { position: absolute; top: 10px; left: 10px; color: white; font-family: 'Arimo', sans-serif; font-size: 20px; }
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas" width="750" height="500"></canvas>
-    <script src="planets/planet_type0.js"></script>
-    <script src="planets/planet_type1.js"></script>
-    <script src="planets/planet_type2.js"></script>
-    <script src="planets/planet_type3.js"></script>
-    <script src="script.js"></script>
+    <canvas id="gameCanvas"></canvas>
+    <div id="score">Score: 0</div>
+    <script src="script.js" type="module"></script>
 </body>
 </html>
