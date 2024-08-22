@@ -27,6 +27,7 @@ let soundPlaying = false;
 
 // Initialize score
 let score = 0;
+const scoreElement = document.getElementById('score');
 
 // Array of planet creation functions
 const planetCreationFunctions = [
@@ -37,14 +38,13 @@ const planetCreationFunctions = [
 ];
 
 const planets = [];
-const maxPlanets = 20; // Maximum number of planets on the screen at one time
+const maxPlanets = 10; // Maximum number of planets on the screen at one time
+const planetSpeed = 1; // Speed of the planets
 
 // Function to generate random planets
 function generatePlanets() {
-    if (planets.length < maxPlanets) {
-        // Random number of planets to generate
+    while (planets.length < maxPlanets) {
         const numPlanets = Math.floor(Math.random() * 5) + 1;  // 1 to 5 planets
-
         for (let i = 0; i < numPlanets; i++) {
             const createPlanet = planetCreationFunctions[Math.floor(Math.random() * planetCreationFunctions.length)];
             let planet;
